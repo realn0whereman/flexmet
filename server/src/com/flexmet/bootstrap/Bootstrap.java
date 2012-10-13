@@ -8,12 +8,14 @@ public class Bootstrap {
 
 	public void initialize(){
 		String runAgent = "flume-ng agent --conf ~/apache-flume-1.2.0/conf/ " +
-				"-f ~/apache-flume-1.2.0/conf/flume.conf -Dflume.root.logger=DEBUG,console -n host1";
+				"-f ~/apache-flume-1.2.0/conf/flume.conf -Dflume.root.logger=DEBUG,console -n host1 &";
 		boolean isRunning = isFlumeRunning();
 		if(!isRunning){
 			System.out.println("Flume isn't running, starting flume");
 			try {
 				Runtime.getRuntime().exec(runAgent);
+				String t = "";
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
