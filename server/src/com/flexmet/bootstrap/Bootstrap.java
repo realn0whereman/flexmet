@@ -13,13 +13,20 @@ public class Bootstrap {
 		if(!isRunning){
 			System.out.println("Flume isn't running, starting flume");
 			try {
-				Runtime.getRuntime().exec(runAgent);
-				String t = "";
+				Process processSearch = Runtime.getRuntime().exec(runAgent);
+				
+				String line = "";
+				BufferedReader error = new BufferedReader(new InputStreamReader(processSearch.getErrorStream()));
+				BufferedReader input = new BufferedReader(new InputStreamReader(processSearch.getInputStream()));
+				while ((line = input.readLine()) != null || (line = error.readLine()) != null){
+					System.out.println(line);
+				}
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		} else {
 			System.out.println("Flume IS running");
 		}
@@ -42,6 +49,7 @@ public class Bootstrap {
 					isRunning = true;
 				}
 		    }
+			input.close();
 		} catch (IOException e) {
 			//TODO handle properly
 			e.printStackTrace();
