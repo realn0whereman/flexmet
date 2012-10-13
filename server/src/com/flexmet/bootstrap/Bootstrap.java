@@ -22,7 +22,8 @@ public class Bootstrap {
 				while ((line = input.readLine()) != null || (line = error.readLine()) != null){
 					System.out.println(line);
 				}
-				
+				error.close();
+				input.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
