@@ -1,3 +1,4 @@
+package com.flexmet.bootstrap;
 
 public class EntryPoint {
 
@@ -6,4 +7,6 @@ public class EntryPoint {
 		b.initialize();
 		
 	}
+	
+	
 }

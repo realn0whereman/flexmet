@@ -6,15 +6,13 @@
         <jar destfile="/Users/phillip/Dropbox/Code/workspace/flexmet/server/server.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="EntryPoint"/>
+                <attribute name="Rsrc-Main-Class" value="com.flexmet.bootstrap.EntryPoint"/>
                 <attribute name="Class-Path" value="."/>
                 <attribute name="Rsrc-Class-Path" value="./ flume-ng-hbase-sink-1.3.0-SNAPSHOT.jar"/>
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/bin"/>
             <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/libs" includes="flume-ng-hbase-sink-1.3.0-SNAPSHOT.jar"/>
-        	
         </jar>
-
     </target>
 </project>
