@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 public class Bootstrap {
 
 	public void initialize(){
-		String runAgent = "flume-ng agent --conf /etc/flume-ng/conf/ -f /etc/flume-ng/conf/flume.conf -Dflume.root.logger=DEBUG,console -n host1";
+		String runAgent = "flume-ng agent --conf /etc/flume-ng/conf/ -f /etc/flume-ng/conf/flume.conf -Dflume.root.logger=DEBUG,console -n host1 &";
 		boolean isRunning = isFlumeRunning();
 		if(!isRunning){
 			System.out.println("Flume isn't running, starting flume");
@@ -19,7 +19,10 @@ public class Bootstrap {
 				String line = "";
 				BufferedReader error = new BufferedReader(new InputStreamReader(processSearch.getErrorStream()));
 				BufferedReader input = new BufferedReader(new InputStreamReader(processSearch.getInputStream()));
-				while ((line = input.readLine()) != null || (line = error.readLine()) != null){
+				while ((line = input.readLine()) != null){
+					System.out.println(line);
+				}
+				while((line = error.readLine()) != null){
 					System.out.println(line);
 				}
 				error.close();
