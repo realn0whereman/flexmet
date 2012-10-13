@@ -9,6 +9,8 @@ public class Bootstrap {
 		boolean isRunning = isFlumeRunning();
 		if(!isRunning){
 			System.out.println("Flume isn't running");
+		} else {
+			System.out.println("Flume IS running");
 		}
 	}
 	
@@ -24,7 +26,7 @@ public class Bootstrap {
 			Process processSearch = Runtime.getRuntime().exec("jps -l | grep flume");
 			BufferedReader input = new BufferedReader(new InputStreamReader(processSearch.getInputStream()));
 			String filtered = input.readLine();
-			if(filtered.contains(namespace)){
+			if(filtered != null && filtered.length() != 0 && filtered.contains(namespace)){
 				isRunning = true;
 			}
 		} catch (IOException e) {
