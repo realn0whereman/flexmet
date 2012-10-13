@@ -23,7 +23,7 @@ public class Bootstrap {
 		boolean isRunning = false;
 		String namespace = "org.apache.flume.node.Application";
 		try {
-			Process processSearch = Runtime.getRuntime().exec("jps -l | grep flume");
+			Process processSearch = Runtime.getRuntime().exec("jps -l");
 			String filtered;
 			BufferedReader input = new BufferedReader(new InputStreamReader(processSearch.getInputStream()));
 			while ((filtered = input.readLine()) != null) {

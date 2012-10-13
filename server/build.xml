@@ -13,6 +13,8 @@
             <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/bin"/>
             <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/libs" includes="flume-ng-hbase-sink-1.3.0-SNAPSHOT.jar"/>
+        	
         </jar>
+
     </target>
 </project>
