@@ -24,15 +24,18 @@ public class Bootstrap {
 		String namespace = "org.apache.flume.node.Application";
 		try {
 			Process processSearch = Runtime.getRuntime().exec("jps -l | grep flume");
+			String filtered;
 			BufferedReader input = new BufferedReader(new InputStreamReader(processSearch.getInputStream()));
-			String filtered = input.readLine();
-			if(filtered != null && filtered.length() != 0 && filtered.contains(namespace)){
-				isRunning = true;
-			}
+			while ((filtered = input.readLine()) != null) {
+		        System.out.println(filtered);
+		        if(filtered.length() != 0 && filtered.contains(namespace)){
+					isRunning = true;
+				}
+		    }
 		} catch (IOException e) {
 			//TODO handle properly
 			e.printStackTrace();
-		}
+		} 
 		return isRunning;
 	}
 }
