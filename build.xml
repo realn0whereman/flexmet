@@ -1,0 +1,191 @@
+<project name="Flexmet" default="all" basedir="./">
+
+	<!-- Defining paths for the build process -->
+	<property name="clientSourceDirectory" location="./client/source/"/>
+	<property name="clientDeployDirectory" location="./client_deploy/"/>
+	<property name="clientLibDirectory" location="./client/lib/"/>
+	<property name="clientBuildDirectory" location="./client/bin/"/>
+	<property name="clientRuntimeLib" location="./client_lib/"/>
+
+	<property name="serverSourceDirectory" location="./server/source/"/>
+	<property name="serverDeployDirectory" location="./server_deploy/"/>
+	<property name="serverLibDirectory" location="./server/lib/"/>
+	<property name="serverBuildDirectory" location="./server/bin/"/>
+	<property name="serverRuntimeLib" location="./server_lib/"/>
+
+	<property name="hudSourceDirectory" location="./hud/source/"/>
+	<property name="hudDeployDirectory" location="./hud_deploy/"/>
+	<property name="hudLibDirectory" location="./hud/lib/"/>
+	<property name="hudBuildDirectory" location="./hud/bin/"/>
+	<property name="hudRuntimeLib" location="./hud_lib/"/>
+
+	<property name="globalLib" location="./lib/"/>
+	<property name="globalLibSource" location="./lib_source/"/>
+
+	<!-- Defining names for everything -->
+	<property name="clientJarName" value="flexmet-client.jar"/>
+	<property name="serverJarName" value="flexmet-server.jar"/>
+	<property name="hudJarName" value="flexmet-hud.jar"/>
+
+	<!-- Variables for the Build Process -->
+	
+
+	<!-- Targets: -->
+	<target name="all" depends="clean">
+		
+		<antcall target="client"/>
+		<antcall target="server"/>
+		<antcall target="hud"/> 
+
+	</target>
+
+	<target name="client">
+	
+		<echo message="Building client"/>
+
+		<javac destdir="${clientBuildDirectory}" includeantruntime="false">
+			<src path="${clientSourceDirectory}"/>					
+			<src path="${globalLibSource}"/>
+			<classpath>
+				<pathelement path="${clientLibDirectory}"/>
+				<pathelement path="${globalLibSource}"/>
+			</classpath>		
+		</javac>
+
+		<mkdir dir="${clientDeployDirectory}"/>
+
+		<!-- Time to build the Jar -->
+		<jar destfile="${clientDeployDirectory}/${clientJarName}" basedir="${clientBuildDirectory}">	
+			<manifest>
+				<attribute name="Main-Class" value="Main"/>
+				<attribute name="Class-Path" value="${clientDeployDirectory}"/>
+			</manifest>
+		</jar>
+
+		<copy toDir="${clientDeployDirectory}">
+			<fileset dir="${clientLibDirectory}"/>
+		</copy>
+		<copy toDir="${clientDeployDirectory}">
+			<fileset dir="${globalLib}"/>
+		</copy>
+
+		<echo message="client Build completed"/>	
+
+	</target>
+
+	<target name="server">
+		
+		<echo message="Building server"/>
+
+		<javac destdir="${serverBuildDirectory}" includeantruntime="false">
+			<src path="${serverSourceDirectory}"/>					
+			<src path="${globalLibSource}"/>
+			<classpath>
+				<pathelement path="${serverLibDirectory}"/>
+				<pathelement path="${globalLibSource}"/>
+			</classpath>		
+		</javac>
+
+		<mkdir dir="${serverDeployDirectory}"/>
+
+		<!-- Time to build the Jar -->
+		<jar destfile="${serverDeployDirectory}/${serverJarName}" basedir="${serverBuildDirectory}">	
+			<manifest>
+				<attribute name="Main-Class" value="Main"/>
+				<attribute name="Class-Path" value="${serverDeployDirectory}"/>
+			</manifest>
+		</jar>
+		
+		<copy toDir="${serverDeployDirectory}">
+			<fileset dir="${serverLibDirectory}"/>
+		</copy>
+		<copy toDir="${serverDeployDirectory}">
+			<fileset dir="${globalLib}"/>
+		</copy>
+
+		<echo message="server Build completed"/>
+
+	</target>
+
+	<target name="hud">
+
+		<echo message="Building hud"/>
+
+		<javac destdir="${hudBuildDirectory}" includeantruntime="false">
+			<src path="${hudSourceDirectory}"/>					
+			<src path="${globalLibSource}"/>
+			<classpath>
+				<pathelement path="${hudLibDirectory}"/>
+				<pathelement path="${globalLibSource}"/>
+			</classpath>		
+		</javac>
+
+		<mkdir dir="${hudDeployDirectory}"/>
+
+		<!-- Time to build the Jar -->
+		<jar destfile="${hudDeployDirectory}/${serverJarName}" basedir="${hudBuildDirectory}">	
+			<manifest>
+				<attribute name="Main-Class" value="Main"/>
+				<attribute name="Class-Path" value="${hudDeployDirectory}"/>
+			</manifest>
+		</jar>
+		
+		<copy toDir="${hudDeployDirectory}">
+			<fileset dir="${hudLibDirectory}"/>
+		</copy>
+		<copy toDir="${serverDeployDirectory}">
+			<fileset dir="${globalLib}"/>
+		</copy>
+
+		<echo message="hud Build completed"/>
+		
+	</target>
+
+	<target name="clean">
+
+		<antcall target="cleanClient"/>
+		<antcall target="cleanServer"/>
+		<antcall target="cleanHud"/>
+
+	</target>
+
+	<target name="cleanClient">
+
+		<echo message="Running clean on the client"/>
+
+		<delete includeemptydirs="true">
+    		<fileset dir="${clientBuildDirectory}" includes="**/*"/>
+  		</delete>
+		<delete dir="${clientDeployDirectory}"/> 
+
+		<echo message="Finished clean on the client"/>		 		
+
+	</target>
+
+	<target name="cleanServer">
+
+		<echo message="Running clean on the server"/>
+
+		<delete includeemptydirs="true">
+    		<fileset dir="${serverBuildDirectory}" includes="**/*"/>
+  		</delete>
+		<delete dir="${serverDeployDirectory}"/> 
+
+		<echo message="Finished clean on the server"/>
+	
+	</target>
+
+	<target name="cleanHud">
+
+		<echo message="Running clean on the hud"/>
+
+		<delete includeemptydirs="true">
+    		<fileset dir="${hudBuildDirectory}" includes="**/*"/>
+  		</delete>
+		<delete dir="${hudDeployDirectory}"/> 
+
+		<echo message="Finished clean on the hud"/>
+
+	</target>
+
+</project>
