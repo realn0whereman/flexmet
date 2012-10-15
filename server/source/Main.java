@@ -7,15 +7,15 @@ public class Main
 		Log.init(Config.convertSettingToInt("log", "default_level"));
 	}
 
-	public static void main(String[] args)
-	{
-		init();
-		
-		run();
-		//test();
-
-		uninit();
-	}
+//	public static void main(String[] args)
+//	{
+//		init();
+//		
+//		run();
+//		//test();
+//
+//		uninit();
+//	}
 
 	public static void run()
 	{
