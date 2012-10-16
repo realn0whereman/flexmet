@@ -7,8 +7,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import com.flexmet.containers.Job;
 import com.flexmet.containers.JobListWrapper;
+import com.flexmet.global.Job;
 
 /**
  * Class responsible for loading scheduled jobs to and from the disk

@@ -3,6 +3,8 @@ package com.flexmet.containers;
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.flexmet.global.Job;
 /**
  * Wrapper class for an arraylist of jobs. This allows easy serialization of jobs
  * @author phillip

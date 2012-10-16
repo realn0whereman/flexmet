@@ -1,3 +1,4 @@
+package com.flexmet.global;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -29,7 +30,7 @@ public class Config
 		}
 		catch(FileNotFoundException fnfe)
 		{
-			Main.die("Error: Unable to locate \"config.txt\". Looked in this directory: " + configFile.getAbsoluteFile() + "\"");
+			System.err.println("Error: Unable to locate \"config.txt\". Looked in this directory: " + configFile.getAbsoluteFile() + "\"");
 		}
 
 		//Initalize Data Structure for config options
@@ -51,7 +52,7 @@ public class Config
 			if(!temp.contains("section"))
 			{
 				reader.close();
-				Main.die("Error while reading config file. Line: \"" + temp + "\" is out of place. Line Number: " + lineNumber); 
+				System.err.println("Error while reading config file. Line: \"" + temp + "\" is out of place. Line Number: " + lineNumber); 
 			}
 
 			String[] pieces = temp.split(" ");
@@ -90,7 +91,7 @@ public class Config
 		String setting = options.getValue(sectionName, settingName);
 		if(setting == null)
 		{
-			Main.die("Error: Failed to find section: \"" + sectionName + "\" with setting: \"" + settingName + "\".");
+			System.err.println("Error: Failed to find section: \"" + sectionName + "\" with setting: \"" + settingName + "\".");
 			return null;		
 		}
 		else
@@ -113,7 +114,7 @@ public class Config
 		}
 		else
 		{
-			Main.die("Error: Tried to conversion to boolean value failed. Attempted to convert section \"" + sectionName + "\" setting: \"" + settingName  + "\".");
+			System.err.println("Error: Tried to conversion to boolean value failed. Attempted to convert section \"" + sectionName + "\" setting: \"" + settingName  + "\".");
 			return false;
 		}
 	}
@@ -128,7 +129,7 @@ public class Config
 		}
 		catch(NumberFormatException nfe)
 		{
-			Main.die("Error: Conversion to byte has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
+			System.err.println("Error: Conversion to byte has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
 		}	
 
 		return 0;	
@@ -151,7 +152,7 @@ public class Config
 		}
 		catch(NumberFormatException nfe)
 		{
-			Main.die("Error: Conversion to short has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
+			System.err.println("Error: Conversion to short has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
 		}	
 
 		return 0;		
@@ -167,7 +168,7 @@ public class Config
 		}
 		catch(NumberFormatException nfe)
 		{
-			Main.die("Error: Conversion to int has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
+			System.err.println("Error: Conversion to int has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
 		}
 		
 		return 0;			
@@ -183,7 +184,7 @@ public class Config
 		}
 		catch(NumberFormatException nfe)
 		{
-			Main.die("Error: Conversion to long has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
+			System.err.println("Error: Conversion to long has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
 		}	
 
 		return 0;		
@@ -199,7 +200,7 @@ public class Config
 		}
 		catch(NumberFormatException nfe)
 		{
-			Main.die("Error: Conversion to float has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
+			System.err.println("Error: Conversion to float has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
 		}		
 		
 		return 0;	
@@ -215,7 +216,7 @@ public class Config
 		}
 		catch(NumberFormatException nfe)
 		{
-			Main.die("Error: Conversion to double has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
+			System.err.println("Error: Conversion to double has failed. A number format exception has occured. Section: \"" + sectionName + "\" Setting: \"" + settingName + "\".");
 		}	
 
 		return 0;		
@@ -253,7 +254,7 @@ public class Config
 
 			if(pieces.length != 2)
 			{		
-				Main.die("Config Error: line " + lineNumber + " in section \"" + sectionName + "\" has too many or too few words on it.  Line looks like this: \"" + temp + "\".");
+				System.err.println("Config Error: line " + lineNumber + " in section \"" + sectionName + "\" has too many or too few words on it.  Line looks like this: \"" + temp + "\".");
 			}
 
 			options.addOption(sectionName, pieces[0], pieces[1]);

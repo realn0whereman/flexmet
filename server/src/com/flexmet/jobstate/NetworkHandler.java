@@ -4,9 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import com.flexmet.containers.Job;
 import com.flexmet.containers.JobListWrapper;
-import com.flexmet.containers.NetworkEventType;
+import com.flexmet.global.Job;
+import com.flexmet.global.NetworkEventType;
 
 import naga.NIOSocket;
 import naga.SocketObserver;

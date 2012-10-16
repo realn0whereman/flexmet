@@ -24,4 +24,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>lib_source</name>
+			<type>2</type>
+			<location>/Users/phillip/Dropbox/Code/workspace/flexmet/lib_source</location>
+		</link>
+	</linkedResources>
 </projectDescription>

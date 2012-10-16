@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import com.flexmet.containers.Job;
 import com.flexmet.containers.JobListWrapper;
+import com.flexmet.global.Job;
 import com.flexmet.jobstate.JobLoader;
 
 public class JobLoaderTests {

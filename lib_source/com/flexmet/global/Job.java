@@ -1,4 +1,4 @@
-package com.flexmet.containers;
+package com.flexmet.global;
 
 import java.io.Serializable;
 
@@ -11,12 +11,13 @@ import java.io.Serializable;
 public class Job implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String command;
+	private String cronData;
 	
 	@Override
 	public String toString() {
 		return "Job [command=" + command + ", cronData=" + cronData + "]";
 	}
-	private String cronData;
+	
 	
 	public String getCommand() {
 		return command;

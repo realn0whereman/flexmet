@@ -11,7 +11,7 @@ import naga.NIOSocket;
 import naga.ServerSocketObserverAdapter;
 import naga.SocketObserverAdapter;
 
-import com.flexmet.containers.NetworkEventType;
+import com.flexmet.global.NetworkEventType;
 
 /**
  * Thread to handle network connections on the out of band control port.

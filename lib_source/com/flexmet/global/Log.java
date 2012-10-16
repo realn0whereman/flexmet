@@ -1,9 +1,12 @@
+package com.flexmet.global;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import java.util.Date;
+
 
 /**
  * Logging Utility. Static class.
@@ -44,7 +47,7 @@ public class Log
 			}			
 			catch(IOException ioe)
 			{		
-				Main.die("Log Error: An IOException has occured while trying to create the log file. Is directory readonly? Exception Message: " + ioe.getMessage() + "\".");
+				System.err.println("Log Error: An IOException has occured while trying to create the log file. Is directory readonly? Exception Message: " + ioe.getMessage() + "\".");
 			}
 		}
 		else
@@ -55,7 +58,7 @@ public class Log
 			}
 			catch(IOException ioe)
 			{
-				Main.die("Log Error: An IOException has occured while trying to create the log file. Is directory readonly? Exception Message: " + ioe.getMessage() + "\".");
+				System.err.println("Log Error: An IOException has occured while trying to create the log file. Is directory readonly? Exception Message: " + ioe.getMessage() + "\".");
 			}
 		} 
 
@@ -65,7 +68,7 @@ public class Log
 		}
 		catch(FileNotFoundException fnfe)
 		{
-			Main.die("Log Error: Could not find or create log file. Looked in this path: \"" + logFile.getPath() + "\" and the exception message: \"" + fnfe.getMessage() + "\".");
+			System.err.println("Log Error: Could not find or create log file. Looked in this path: \"" + logFile.getPath() + "\" and the exception message: \"" + fnfe.getMessage() + "\".");
 		}		
 		
 		ready = !logWriter.checkError(); 

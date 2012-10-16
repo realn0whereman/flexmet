@@ -1,4 +1,4 @@
-package com.flexmet.containers;
+package com.flexmet.global;
 
 /**
  * Enum for defining the type of network event reaction a network handler should take

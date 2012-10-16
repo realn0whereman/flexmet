@@ -12,7 +12,7 @@
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/bin"/>
-            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/libs" includes="naga-3_0.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/lib" includes="naga-3_0.jar"/>
             <zipfileset dir="/Applications/eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705" includes="junit.jar"/>
             <zipfileset dir="/Applications/eclipse/plugins" includes="org.hamcrest.core_1.1.0.v20090501071000.jar"/>
         </jar>

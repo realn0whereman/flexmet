@@ -1,3 +1,4 @@
+package com.flexmet.global;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map;
@@ -65,12 +66,12 @@ public class Trikey
 		
 		if(temp == null)
 		{
-			Main.die("Config Error : Section name \"" + sectionName + "\" does not exist.");
+			System.err.println("Config Error : Section name \"" + sectionName + "\" does not exist.");
 		}
 
 		if(temp.get(optionName) == null)
 		{
-			Main.die("Config Error : Property name \"" + optionName + "\" does not exist in section: \"" + sectionName + "\".");
+			System.err.println("Config Error : Property name \"" + optionName + "\" does not exist in section: \"" + sectionName + "\".");
 		}
 
 		return temp.get(optionName);
@@ -117,7 +118,7 @@ public class Trikey
 	{
 		if(message == null)
 		{
-			Main.die("Trikey Error: Null got pasted into debugPrint as the message.");
+			System.err.println("Trikey Error: Null got pasted into debugPrint as the message.");
 		}
 
 		if(toLog)
