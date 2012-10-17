@@ -3,12 +3,12 @@ struct ThriftEvent {
         1: i64 timestamp, // time of creation
 	2: string hostname, // source of metric
 	3: string metricName, // name of the metric
-        2: string data //the actual metric data
+        4: string data //the actual metric data
 }
 
 //models a list of jobs sent back from the main server
 struct ThriftJobList {
-	1: string list
+	1: string jobList
 }
 
 //The flexmet client implements this to interact with the server directly to get jobs
