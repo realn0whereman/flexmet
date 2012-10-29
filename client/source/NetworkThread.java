@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import com.flexmet.global.*;
 public class NetworkThread extends Thread
 {
 	private ArrayList<NetworkReceivedEventListenerInterface> receiveListeners;

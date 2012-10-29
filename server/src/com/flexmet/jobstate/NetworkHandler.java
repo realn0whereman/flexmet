@@ -4,13 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import naga.NIOSocket;
+
 import com.flexmet.containers.JobListWrapper;
 import com.flexmet.global.Job;
 import com.flexmet.global.NetworkEventType;
-
-import naga.NIOSocket;
-import naga.SocketObserver;
-import naga.packetreader.AsciiLinePacketReader;
 
 /**
  * Class that the NetworkControLDaemon utilizes and calls to handle network events

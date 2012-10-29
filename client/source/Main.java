@@ -1,3 +1,6 @@
+import com.flexmet.global.Config;
+import com.flexmet.global.Log;
+
 public class Main
 {
 	public static NetworkReceivedEventListener networkListener;
@@ -6,7 +9,21 @@ public class Main
 	public static void main(String[] args)
 	{
 		init();
-		
+		NetworkDaemon nDaemon = new NetworkDaemon();
+		nDaemon.start();
+//		Sample Code:
+//		*Getting Jobs
+//		NetworkDaemon.getJobs();
+//		*Sending metrics
+//		MetricEvent event = new MetricEvent();
+//		event.setMetricName("CPU Temp");
+//		event.setHostname("endpoint agent");
+//		event.setTimestamp(System.currentTimeMillis());
+//		int i = 100;
+//		while(i-->0){
+//			event.setData(Integer.toString(i));
+//			NetworkDaemon.sendFlumeEvent(event);
+//		}
 		test();
 
 		uninit();
@@ -33,7 +50,7 @@ public class Main
 
 		Config.uninit();
 
-		System.exit(0);
+		//System.exit(0);
 	}
 
 	public static void die(String message)

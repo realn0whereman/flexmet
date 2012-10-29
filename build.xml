@@ -1,11 +1,19 @@
 <project name="Flexmet" default="all" basedir="./">
 
+	<path id="lib-classpath">
+    		<fileset dir="./lib">
+        		<include name="*.jar"/>
+    		</fileset>
+	</path>
+
+
 	<!-- Defining paths for the build process -->
 	<property name="clientSourceDirectory" location="./client/source/"/>
 	<property name="clientDeployDirectory" location="./client_deploy/"/>
 	<property name="clientLibDirectory" location="./client/lib/"/>
 	<property name="clientBuildDirectory" location="./client/bin/"/>
 	<property name="clientRuntimeLib" location="./client_lib/"/>
+	<property name="thriftRuntimeLib" location="./thrift/gen-java/"/>
 
 	<property name="serverSourceDirectory" location="./server/source/"/>
 	<property name="serverDeployDirectory" location="./server_deploy/"/>
@@ -42,24 +50,34 @@
 	<target name="client">
 	
 		<echo message="Building client"/>
+		
+		<manifestclasspath property="lib.list" jarfile="${clientDeployDirectory}/${clientJarName}">
+    			<classpath refid="lib-classpath"/>
+		</manifestclasspath>
+	
 
 		<javac destdir="${clientBuildDirectory}" includeantruntime="false">
 			<src path="${clientSourceDirectory}"/>					
 			<src path="${globalLibSource}"/>
+			<src path="${thriftRuntimeLib}"/>
 			<classpath>
 				<pathelement path="${clientLibDirectory}"/>
 				<pathelement path="${globalLibSource}"/>
+				<pathelement path="${globalLib}"/>
 			</classpath>		
+			<classpath refid="lib-classpath"/>
 		</javac>
 
 		<mkdir dir="${clientDeployDirectory}"/>
+
 
 		<!-- Time to build the Jar -->
 		<jar destfile="${clientDeployDirectory}/${clientJarName}" basedir="${clientBuildDirectory}">	
 			<manifest>
 				<attribute name="Main-Class" value="Main"/>
-				<attribute name="Class-Path" value="${clientDeployDirectory}"/>
+				<attribute name="Class-Path" value="${lib.list}"/>
 			</manifest>
+			<zipgroupfileset dir="${globalLib}" includes="*.jar"/>
 		</jar>
 
 		<copy toDir="${clientDeployDirectory}">

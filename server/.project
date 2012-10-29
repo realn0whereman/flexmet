@@ -26,9 +26,19 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>global</name>
+			<type>2</type>
+			<location>/Users/phillip/Dropbox/Code/workspace/flexmet/lib</location>
+		</link>
+		<link>
 			<name>lib_source</name>
 			<type>2</type>
 			<location>/Users/phillip/Dropbox/Code/workspace/flexmet/lib_source</location>
+		</link>
+		<link>
+			<name>thrift_source</name>
+			<type>2</type>
+			<location>/Users/phillip/Dropbox/Code/workspace/flexmet/thrift/gen-java</location>
 		</link>
 	</linkedResources>
 </projectDescription>
