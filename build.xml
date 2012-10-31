@@ -51,10 +51,7 @@
 	
 		<echo message="Building client"/>
 		
-		<manifestclasspath property="lib.list" jarfile="${clientDeployDirectory}/${clientJarName}">
-    			<classpath refid="lib-classpath"/>
-		</manifestclasspath>
-	
+		<mkdir dir="${clientBuildDirectory}"/>
 
 		<javac destdir="${clientBuildDirectory}" includeantruntime="false">
 			<src path="${clientSourceDirectory}"/>					
@@ -70,6 +67,9 @@
 
 		<mkdir dir="${clientDeployDirectory}"/>
 
+		<manifestclasspath property="lib.list" jarfile="${clientDeployDirectory}/${clientJarName}">
+    			<classpath refid="lib-classpath"/>
+		</manifestclasspath>
 
 		<!-- Time to build the Jar -->
 		<jar destfile="${clientDeployDirectory}/${clientJarName}" basedir="${clientBuildDirectory}">	
