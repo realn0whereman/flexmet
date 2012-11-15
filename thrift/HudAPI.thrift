@@ -15,5 +15,5 @@ struct HudPIQLResponse {
 }
 
 service HudPIQLService {
-	HudPIQLResponse executePIQLQuery(1: HudPIQLQuery)
+	HudPIQLResponse executePIQLQuery(1: HudPIQLQuery piqlEvent)
 }
