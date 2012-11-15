@@ -1,16 +1,26 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+import org.quartz.Scheduler;
+import org.quartz.SchedulerFactory;
+import org.quartz.SchedulerException;
+
 import com.flexmet.global.Config;
 import com.flexmet.global.Log;
+import com.flexmet.global.MetricEvent;
+import com.flexmet.global.JSONObject;
+
 
 public class Main
 {
-	public static NetworkReceivedEventListener networkListener;
-	public static NetworkThread networkThread;	
+	public static Scheduler scheduler;
 
 	public static void main(String[] args)
 	{
 		init();
-		NetworkDaemon nDaemon = new NetworkDaemon();
-		nDaemon.start();
+//		NetworkDaemon nDaemon = new NetworkDaemon();
+//		nDaemon.start();
 //		Sample Code:
 //		*Getting Jobs
 //		NetworkDaemon.getJobs();
@@ -34,14 +44,10 @@ public class Main
 		Config.init();
 
 		Log.init(Config.convertSettingToInt("log", "default_level"));	
-		
-		//Init connection to the server:
-		networkThread = new NetworkThread();
 
-		//Register Listener:
-		networkListener = new NetworkReceivedEventListener();
-		networkThread.addReceiveListener(networkListener);
-
+		//Init Scheduler
+		//SchedulerFactory factory = new SchedulerFactory();
+		//scheduler = factory.getScheduler();
 	}
 
 	public static void uninit()
@@ -64,9 +70,13 @@ public class Main
 
 	public static void test()
 	{
-		Test testObject = new Test();
-		NetworkReceivedEventListener listener = new NetworkReceivedEventListener();
-		testObject.addEventListener(listener);
-		testObject.fireEvent();
+		MetricEvent sampleEvent = new MetricEvent("filesNames Galore", "BADASS.com", "BADASS RANKING:", 9001);
+		System.out.println(sampleEvent.getJSONString());
+		System.out.println("Copying.......................................................................");
+		MetricEvent copy = MetricEvent.getFromJSON(sampleEvent.getJSONString());
+		System.out.println(copy.getJSONString());
+
+		//JSONObject json = new JSONObject("Bacon");
+		//System.out.println(json.getByte("hi"));
 	}
 }

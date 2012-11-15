@@ -5,6 +5,18 @@
         		<include name="*.jar"/>
     		</fileset>
 	</path>
+	<path id="b">
+		<fileset dir="./">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="clientBuild">
+		<fileset dir="client/lib/">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
 
 
 	<!-- Defining paths for the build process -->
@@ -35,6 +47,13 @@
 	<property name="serverJarName" value="flexmet-server.jar"/>
 	<property name="hudJarName" value="flexmet-hud.jar"/>
 
+
+	<path id="deployClassPath">
+		<fileset dir="${clientDeployDirectory}">
+			<include name=".jar"/> 
+		</fileset>
+	</path>
+
 	<!-- Variables for the Build Process -->
 	
 
@@ -53,7 +72,7 @@
 		
 		<mkdir dir="${clientBuildDirectory}"/>
 
-		<javac destdir="${clientBuildDirectory}" includeantruntime="false">
+		<javac destdir="${clientBuildDirectory}" includeantruntime="false" debug="on" debuglevel="lines,vars,source">
 			<src path="${clientSourceDirectory}"/>					
 			<src path="${globalLibSource}"/>
 			<src path="${thriftRuntimeLib}"/>
@@ -63,9 +82,18 @@
 				<pathelement path="${globalLib}"/>
 			</classpath>		
 			<classpath refid="lib-classpath"/>
+			<classpath refid="clientBuild"/>
 		</javac>
 
 		<mkdir dir="${clientDeployDirectory}"/>
+
+				<copy toDir="${clientDeployDirectory}">
+			<fileset dir="${clientLibDirectory}"/>
+		</copy>
+		<copy toDir="${clientDeployDirectory}">
+			<fileset dir="${globalLib}"/>
+		</copy>
+
 
 		<manifestclasspath property="lib.list" jarfile="${clientDeployDirectory}/${clientJarName}">
     			<classpath refid="lib-classpath"/>
@@ -80,12 +108,7 @@
 			<zipgroupfileset dir="${globalLib}" includes="*.jar"/>
 		</jar>
 
-		<copy toDir="${clientDeployDirectory}">
-			<fileset dir="${clientLibDirectory}"/>
-		</copy>
-		<copy toDir="${clientDeployDirectory}">
-			<fileset dir="${globalLib}"/>
-		</copy>
+
 
 		<echo message="client Build completed"/>	
 
