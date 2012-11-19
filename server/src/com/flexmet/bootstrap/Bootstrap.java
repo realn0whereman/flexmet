@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.flexmet.jobstate.JobLoader;
-import com.flexmet.jobstate.NetworkControlDaemon;
+import com.flexmet.network.NetworkControlDaemon;
 /**
  * This class restores the state of scheduled jobs, opens network port for out of band communication
  * checks if flume is running, and if not starts it.
@@ -27,6 +27,7 @@ public class Bootstrap {
 	 */
 	public void initialize(){
 		loader.loadJobsFromDisk();
+		
 		networkServer.start();
 //		boolean isRunning = isFlumeRunning();
 //		if(!isRunning){

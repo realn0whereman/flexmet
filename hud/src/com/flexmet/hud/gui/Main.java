@@ -1,7 +1,10 @@
 package com.flexmet.hud.gui;
 public class Main
 {
+	public static String masterServer = "localhost";//hostname of server
 	public static void main(String[] args){
-		System.out.println("Test");
+		MainFrame.start();//start the gui thread
 	}
+	
+	
 }                     
