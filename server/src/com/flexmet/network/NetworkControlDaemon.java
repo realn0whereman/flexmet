@@ -138,10 +138,11 @@ public class NetworkControlDaemon extends Thread implements Runnable {
 	 * TODO INCOMPLETE
 	 * @param command FastPath command to send to clients
 	 */
-	public void sendFastPath(String command){
+	public ArrayList<ThriftEvent> sendFastPath(String command){
 		FastPathEvent fpEvent = new FastPathEvent();
 		List<String> hostList = new ArrayList<String>(); //TODO fix later
 		hostList.add("localhost");
+		ArrayList<ThriftEvent> responses = new ArrayList<ThriftEvent>();
 		ThriftEvent response = null;
 		for(String host:hostList){
 			TSocket fpSocket = new TSocket(host, FastPathService.fastPathPort);
@@ -159,10 +160,11 @@ public class NetworkControlDaemon extends Thread implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			responses.add(response);
 			System.out.println(response.data);
 			fpSocket.close();
 		}
-		
+		return responses;
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.flexmet.network;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.thrift.TException;
 
@@ -51,10 +52,12 @@ public class NetworkHandlers {
 		private static NetworkControlDaemon ncd = new NetworkControlDaemon();
 		@Override
 		public HudFastPathEvent executeFastPath(HudFastPathEvent event){
-			System.out.println(event.fpData);
-			//ncd.sendFastPath(event.getFpData());
-			event.setFpData(event.getFpData()+1);
-			return event;
+			HudFastPathEvent totalResponse = new HudFastPathEvent();
+			ArrayList<ThriftEvent> responses = ncd.sendFastPath(event.getFpData());
+			for(ThriftEvent response:responses){
+				totalResponse.setFpData(totalResponse.getFpData() + response.data);
+			}
+			return totalResponse;
 		}
 	
 		

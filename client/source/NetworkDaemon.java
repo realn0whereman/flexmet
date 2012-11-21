@@ -171,6 +171,7 @@ public class NetworkDaemon extends Thread implements Runnable {
 		 */
 		public ThriftEvent sendFastPathCommand(FastPathEvent event) throws TException {
 			String command = event.getCommand();
+			System.out.println(event.getCommand());
 			//TODO /*Run command*/
 			ThriftEvent response = new ThriftEvent();
 			response.setData("FastPath Metric Data");
