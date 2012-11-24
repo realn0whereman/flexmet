@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
-#This program starts the entire flexmet framework including client jars, server jars, and collector flume "forwarderer"
+#This program stops the entire flexmet framework including client jars, server jars, and collector flume "forwarderer"
 
 #check input args
 if ($#ARGV != 0 ) {
-	print "usage: ./startFlexmet.pl <name of config file>\n";
+	print "usage: ./stoplexmet.pl <name of config file>\n";
 	exit;
 }
 $file=$ARGV[0];
@@ -23,28 +23,33 @@ while(<FILE>){
     }
 }
 
-#take appropriate action for server
+
 foreach(@servers){
+	#kill flume
 	$command = "ssh $_ \"jps -l | grep org.apache.flume.node | grep -v grep | awk '{print \$1}' | xargs kill\"";
 	print $command."\n";
 	print `$command`;
 	
+	#kill server jar
 	$command = "ssh $_ \"jps -l | grep server.jar | grep -v grep | awk '{print \$1}' | xargs kill\"";
 	print $command."\n";
 	print `$command`;
 }
 
 foreach(@collectors){
+	#kill flume
 	$command = "ssh $_ \"jps -l | grep org.apache.flume.node | grep -v grep | awk '{print \$1}' | xargs kill\"";
 	print $command."\n";
 	print `$command`;
 }
 
 foreach(@clients){
+	#kill flume
 	$command = "ssh $_ \"jps -l | grep org.apache.flume.node | grep -v grep | awk '{print \$1}' | xargs kill\"";
 	print $command."\n";
 	print `$command`;
 	
+	#kill client
 	$command = "ssh $_ \"jps -l | grep flexmet-client.jar | grep -v grep | awk '{print \$1}' | xargs kill\"";
 	print $command."\n";
 	print `$command`;

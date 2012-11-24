@@ -15,7 +15,6 @@ while(<FILE>){
 }
 print "Sending $fileToPush\n";
 foreach(@servers){
-	#$command = "scp $fileToPush $_:~/.";
 	$command = "rsync -avz $fileToPush $_:~/.";
 	print $command."\n";
 	print `$command`;

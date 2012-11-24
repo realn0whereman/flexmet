@@ -23,15 +23,7 @@ while(<FILE>){
     }
 }
 
-#transfer flume config to machines
-#@lsFiles = `ls *.jar *.conf`;
-#print @lsFiles;
-#exit(1);
-#foreach(@lsFiles){
-#	print chomp($_);
-#	push(@files,$_);
-#}
-#print $files[0];
+#transfer files to machines
 foreach(@servers,@collectors,@clients){
 	$command = "rsync -avz *.jar $_:~/.";
 	print $command."\n";
