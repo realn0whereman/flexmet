@@ -53,6 +53,7 @@ public class NetworkHandlers {
 		@Override
 		public HudFastPathEvent executeFastPath(HudFastPathEvent event){
 			HudFastPathEvent totalResponse = new HudFastPathEvent();
+			totalResponse.setFpData("");
 			ArrayList<ThriftEvent> responses = ncd.sendFastPath(event.getFpData());
 			for(ThriftEvent response:responses){
 				totalResponse.setFpData(totalResponse.getFpData() + response.data);

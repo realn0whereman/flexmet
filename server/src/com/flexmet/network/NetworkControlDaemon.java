@@ -2,6 +2,10 @@ package com.flexmet.network;
 
 
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,8 +144,7 @@ public class NetworkControlDaemon extends Thread implements Runnable {
 	 */
 	public ArrayList<ThriftEvent> sendFastPath(String command){
 		FastPathEvent fpEvent = new FastPathEvent();
-		List<String> hostList = new ArrayList<String>(); //TODO fix later
-		hostList.add("localhost");
+		List<String> hostList = getClients();
 		ArrayList<ThriftEvent> responses = new ArrayList<ThriftEvent>();
 		ThriftEvent response = null;
 		for(String host:hostList){
@@ -150,7 +153,7 @@ public class NetworkControlDaemon extends Thread implements Runnable {
 				fpSocket.open();
 				TBinaryProtocol fpProtocol = new TBinaryProtocol(fpSocket);
 				FastPathService.Client fpClient = new FastPathService.Client(fpProtocol);
-				fpEvent.setCommand(command);
+				fpEvent.setCommand(command); 
 				response = fpClient.sendFastPathCommand(fpEvent);
 				
 			} catch (TTransportException e) {
@@ -165,6 +168,29 @@ public class NetworkControlDaemon extends Thread implements Runnable {
 			fpSocket.close();
 		}
 		return responses;
+	}
+	
+	public ArrayList<String> getClients(){
+		ArrayList<String> clients = new ArrayList<String>();
+		BufferedReader inputStream = null;
+		try {
+			inputStream = new BufferedReader(new FileReader("flexmet.conf"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String line;
+		try {
+			while((line = inputStream.readLine()) != null){
+				if(line.contains("client")){
+					clients.add(line.substring(0,line.indexOf(":")));
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return clients;
 	}
 	
 	

@@ -19,8 +19,9 @@ public class Main
 	public static void main(String[] args)
 	{
 		init();
-//		NetworkDaemon nDaemon = new NetworkDaemon();
-//		nDaemon.start();
+		NetworkDaemon nDaemon = new NetworkDaemon();
+		nDaemon.start();
+			
 //		Sample Code:
 //		*Getting Jobs
 //		NetworkDaemon.getJobs();

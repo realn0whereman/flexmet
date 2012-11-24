@@ -37,6 +37,12 @@ public class NetworkDaemon extends Thread implements Runnable {
 	 * The method run when the thread starts. Starts listening for pastpath commands issued from the server
 	 */
 	public void run(){
+		
+		//start flume client 
+		if(!isFlumeAvroClientRunning()){
+			startFlumeAvroClient();
+		}
+		
 			//Initialize the handler, and processor
 			FastPathHandler handler = new FastPathHandler();
 			FastPathService.Processor<FastPathHandler> tp = new FastPathService.Processor<FastPathHandler>(handler);
@@ -174,7 +180,7 @@ public class NetworkDaemon extends Thread implements Runnable {
 			System.out.println(event.getCommand());
 			//TODO /*Run command*/
 			ThriftEvent response = new ThriftEvent();
-			response.setData("FastPath Metric Data");
+			response.setData(event.getCommand()+"3");
 			response.setHostname("localhost");
 			response.setTimestamp(System.currentTimeMillis());
 			return response;
