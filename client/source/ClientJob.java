@@ -3,23 +3,25 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import com.flexmet.global.Log;
 
 public class ClientJob implements Job
 {
-	public void execute(JobExecutionContext args)
+	public void execute(JobExecutionContext context)
 	{
-		if(args == null)
+		if(context == null)
 		{
 			//What's the best thing to do here?
 			Log.writeError("ClientJob:execute() : The run agrs were null");
 			return;
 		}
 
+		JobDataMap args = context.getJobDetail().getJobDataMap();
 		String command = (String)args.get("command");
-	
+
 		//Get the runtime for the command
 		Runtime runtime = null;
 		Process process = null; 
@@ -99,8 +101,13 @@ public class ClientJob implements Job
 		
 		//Time to give the results to Flume.
 		long timeStamp = System.currentTimeMillis();
+		
+		//Testing:
+		//System.out.println("output:\n" + output);
+		//Log.writeSpecial(output);
 
 		//Build the container Object
+		MetricEvent event = new MetricEvent(output, Main.hostname, );		
 
 		//Send to Flume
 	}
