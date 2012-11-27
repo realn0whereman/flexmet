@@ -32,6 +32,10 @@ public class Main
 		init();
 		NetworkDaemon nDaemon = new NetworkDaemon();
 		nDaemon.start();
+<<<<<<< HEAD
+=======
+			
+>>>>>>> 761f4321fdb2d6f5a7a74c89c4d997ec01ba5f85
 //		Sample Code:
 //		*Getting Jobs
 		ArrayList<Job> startingJobs = NetworkDaemon.getJobs();

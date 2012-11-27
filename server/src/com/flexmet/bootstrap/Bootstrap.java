@@ -2,6 +2,8 @@ package com.flexmet.bootstrap;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import com.flexmet.jobstate.JobLoader;
 import com.flexmet.network.NetworkControlDaemon;
@@ -14,9 +16,21 @@ import com.flexmet.network.NetworkControlDaemon;
 public class Bootstrap {
 	public static JobLoader loader;
 	public static NetworkControlDaemon networkServer;
-	private final String runAgent = "flume-ng agent --conf /etc/flume-ng/conf/ -f /etc/flume-ng/conf/flume.conf -Dflume.root.logger=DEBUG,console -n host1";
+	private static String hostname;
+	static{try {
+		hostname = InetAddress.getLocalHost().getHostName();
+		if(hostname.contains(".")){
+			hostname = hostname.substring(0,hostname.indexOf("."));
+		}
+	} catch (UnknownHostException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}}
+	
+	private final String runAgent = "flume-ng agent --conf /etc/flume-ng/conf/ -f ./flume.conf -Dflume.root.logger=DEBUG,console -n "+hostname;
 	
 	public Bootstrap(){
+		
 		loader = new JobLoader();
 		networkServer = new NetworkControlDaemon();
 	}
@@ -29,18 +43,18 @@ public class Bootstrap {
 		loader.loadJobsFromDisk();
 		
 		networkServer.start();
-//		boolean isRunning = isFlumeRunning();
-//		if(!isRunning){
-//			System.out.println("Flume isn't running, starting flume1");
-//			try {
-//				startFlume();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		} else {
-//			System.out.println("Flume IS running");
-//		}
+		boolean isRunning = isFlumeRunning();
+		if(!isRunning){
+			System.out.println("Flume isn't running, starting flume1");
+			try {
+				startFlume();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("Flume IS running");
+		}
 	}
 	
 	

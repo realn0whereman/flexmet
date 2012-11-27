@@ -30,8 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ThriftService {
-  public static final int commPort = 26814;
-  public static final int clientFlumePort = 26813; 
+  public static final int commPort = 26820;
+  public static final int clientFlumePort = 26812; 
   public interface Iface {
 
     public ThriftJobList getJobs() throws org.apache.thrift.TException;

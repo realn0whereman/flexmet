@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HudFastPathService {
-	public static final int hudFastPathPort = 26816;
+	public static final int hudFastPathPort = 26821;
   public interface Iface {
 
     public HudFastPathEvent executeFastPath(HudFastPathEvent event) throws org.apache.thrift.TException;
