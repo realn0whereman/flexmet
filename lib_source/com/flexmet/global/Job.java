@@ -14,6 +14,12 @@ public class Job implements Serializable {
 	private String cronData;
 	private String metricName;
 	
+	public Job(String command, String cronData)
+	{
+		this.command = command;
+		this.cronData = cronData;
+	}
+
 	@Override
 	public String toString() {
 		return "Job [command=" + command + ", cronData=" + cronData + ", metricName=" + metricName + "]";
