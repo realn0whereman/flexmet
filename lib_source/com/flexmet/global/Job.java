@@ -12,10 +12,11 @@ public class Job implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String command;
 	private String cronData;
+	private String metricName;
 	
 	@Override
 	public String toString() {
-		return "Job [command=" + command + ", cronData=" + cronData + "]";
+		return "Job [command=" + command + ", cronData=" + cronData + ", metricName=" + metricName + "]";
 	}
 	
 	
@@ -31,4 +32,17 @@ public class Job implements Serializable {
 	public void setCronData(String cronData) {
 		this.cronData = cronData;
 	}
+
+
+	public String getMetricName() {
+		return metricName;
+	}
+
+
+	public void setMetricName(String metricName) {
+		this.metricName = metricName;
+	}
+	
+	
+	
 }

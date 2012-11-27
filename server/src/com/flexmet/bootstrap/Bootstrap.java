@@ -17,15 +17,17 @@ public class Bootstrap {
 	public static JobLoader loader;
 	public static NetworkControlDaemon networkServer;
 	private static String hostname;
-	static{try {
-		hostname = InetAddress.getLocalHost().getHostName();
-		if(hostname.contains(".")){
-			hostname = hostname.substring(0,hostname.indexOf("."));
+	static{
+		try {
+			hostname = InetAddress.getLocalHost().getHostName();
+			if(hostname.contains(".")){
+				hostname = hostname.substring(0,hostname.indexOf("."));
+			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	} catch (UnknownHostException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}}
+	}
 	
 	private final String runAgent = "flume-ng agent --conf /etc/flume-ng/conf/ -f ./flume.conf -Dflume.root.logger=DEBUG,console -n "+hostname;
 	

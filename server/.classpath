@@ -9,6 +9,8 @@
 	<classpathentry kind="lib" path="/Users/phillip/Dropbox/Code/workspace/flexmet/server/lib/naga-3_0.jar"/>
 	<classpathentry kind="lib" path="global/libthrift-0.9.0.jar"/>
 	<classpathentry kind="lib" path="global/slf4j-api-1.7.2.jar"/>
+	<classpathentry kind="lib" path="global/hbase.jar"/>
+	<classpathentry kind="lib" path="global/hadoop-common.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
