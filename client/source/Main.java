@@ -1,7 +1,10 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import org.quartz.CronExpression;
 import org.quartz.Scheduler;
@@ -30,28 +33,23 @@ public class Main
 	public static void main(String[] args)
 	{
 		init();
+		
 		NetworkDaemon nDaemon = new NetworkDaemon();
 		nDaemon.start();
-<<<<<<< HEAD
-=======
-			
->>>>>>> 761f4321fdb2d6f5a7a74c89c4d997ec01ba5f85
-//		Sample Code:
-//		*Getting Jobs
+
+		try
+		{
+			hostName = InetAddress.getLocalHost().getHostName();
+		}
+		catch(UnknownHostException uhe)
+		{
+			die("Unable to get the hose name. Exception Message: " + uhe.getMessage());
+		}
+		
 		ArrayList<Job> startingJobs = NetworkDaemon.getJobs();
 		
-		for(int index = 0; index < startingJobs.size(); index++)
-		{
-			scheduleNewJob(startingJobs.get(index));
-		}		
-	
-//		*Sending metrics
-//		MetricEvent event = new MetricEvent();
-//		event.setMetricName("CPU Temp");
-//		event.setHostname("endpoint agent");
-//		event.setTimestamp(System.currentTimeMillis());
-//		int i = 100;
-//		while(i-->0){
+		resetJobList(startingJobs);
+
 //			event.setData(Integer.toString(i));
 //			NetworkDaemon.sendFlumeEvent(event);
 //		}
@@ -98,10 +96,53 @@ public class Main
 		System.exit(1);
 	}	
 
+	public static boolean resetJobList(ArrayList<Job> newJobs)
+	{	
+		if(newJobs == null)
+		{
+			System.out.println("Can't schedule a null job list");
+			return false;
+		}
+
+	
+		try
+		{
+			if(scheduler != null)
+			{
+				scheduler.shutdown(false);
+			}			
+			StdSchedulerFactory factory = new StdSchedulerFactory();
+			scheduler = factory.getScheduler();
+			scheduler.start();
+		}
+		catch(SchedulerException se)
+		{
+			die("Exception was thrown while trying to reset the job list. Exception message: " + se.getMessage());
+			return false;
+		}
+
+		boolean success = true;
+
+		for(int index = 0; index < newJobs.size(); index++)
+		{
+			if(scheduleNewJob(newJobs.get(index)))
+			{
+			}
+			else
+			{
+				//This job didn't schedule.. Now What?
+				success = false;
+			}
+		}
+
+		return success;
+	}
+
 	public static boolean scheduleNewJob(Job job)
 	{
 		JobDetailImpl jobDetail = new JobDetailImpl("newJob", jobGroupNumber + "", ClientJob.class);
 		jobDetail.getJobDataMap().put("command", job.getCommand());
+		jobDetail.getJobDataMap().put("metricName", job.getMetricName());
 		CronTriggerImpl trigger = new CronTriggerImpl("cronTrigger", jobGroupNumber + "");
 		jobGroupNumber++;
 
@@ -129,7 +170,9 @@ public class Main
 
 	public static void test()
 	{
-		Job blah = new Job("ps", "0/5 * * * * ?");
+		System.out.println(hostName);
+
+		/*Job blah = new Job("ps", "0/5 * * * * ?");
 			
 		Job kitIsARetart = new Job("sensors -f", "0/8 * * * * ?");	
 
@@ -137,7 +180,7 @@ public class Main
 		System.out.println("Scheduling Second Job");
 		scheduleNewJob(kitIsARetart);
 		System.out.println("Finished Scheduling jobs");
-		/*MetricEvent sampleEvent = new MetricEvent("filesNames Galore", "BADASS.com", "BADASS RANKING:", 9001);
+		MetricEvent sampleEvent = new MetricEvent("filesNames Galore", "BADASS.com", "BADASS RANKING:", 9001);
 		System.out.println(sampleEvent.getJSONString());
 		System.out.println("Copying.......................................................................");
 		MetricEvent copy = MetricEvent.getFromJSON(sampleEvent.getJSONString());

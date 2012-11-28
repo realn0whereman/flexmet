@@ -14,8 +14,10 @@ import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransportException;
 
+import com.flexmet.global.Log;
 import com.flexmet.global.Job;
 import com.flexmet.global.MetricEvent;
+
 import com.flexmet.thrift.FastPathEvent;
 import com.flexmet.thrift.FastPathService;
 import com.flexmet.thrift.ThriftEvent;
@@ -177,12 +179,78 @@ public class NetworkDaemon extends Thread implements Runnable {
 		 */
 		public ThriftEvent sendFastPathCommand(FastPathEvent event) throws TException {
 			String command = event.getCommand();
-			System.out.println(event.getCommand());
-			//TODO /*Run command*/
 			ThriftEvent response = new ThriftEvent();
-			response.setData(event.getCommand()+"3");
-			response.setHostname("localhost");
+			response.setHostname(Main.hostName);
 			response.setTimestamp(System.currentTimeMillis());
+
+			Runtime runtime = null;
+			Process process = null; 
+
+			try
+			{
+				runtime = Runtime.getRuntime();
+				process = runtime.exec(command);
+			}
+			catch(IOException ioe)
+			{
+				response.setData("Error. Exception Message: " + ioe.getMessage());
+				return response;
+			}
+	
+			try
+			{
+				process.waitFor();
+			}
+			catch(InterruptedException ie)
+			{
+				Log.writeError("The job has thrown an interrupted exception while trying to run. Message below:");
+				Log.writeError(ie.getMessage());
+				response.setData("Error. Exception Message: " + ie.getMessage());
+				return response;
+			}
+			catch(NullPointerException npe)
+			{
+				System.out.println("Command: \"" + command + "\" is not valid.");
+				response.setData("Command: \"" + command + "\" is not valid.");
+				return response;
+			}
+
+			BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			String output = "";
+			String temp = "";	
+
+			try
+			{
+				temp = outputReader.readLine();
+			}
+			catch(IOException ioe)	
+			{
+				Log.writeError("There was an IO exception while trying to read the command's output. Message Below:");
+				Log.writeError(ioe.getMessage());
+				response.setData("Error. Exception Message: " + ioe.getMessage());
+				return response;
+			}	
+
+			while(temp != null)	
+			{
+
+				output = output.concat(temp);			
+					
+				try
+				{
+					temp = outputReader.readLine();
+				}
+				catch(IOException ioe)
+				{
+					Log.writeError("There was an IO exception while trying to read the command's output. Message Below:");
+					Log.writeError(ioe.getMessage());
+					response.setData("Error. Exception Message: " + ioe.getMessage());
+					return response;
+				}
+			}
+			
+			response.setData(output);
+
 			return response;
 		}
 	}

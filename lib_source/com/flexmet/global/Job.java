@@ -14,10 +14,11 @@ public class Job implements Serializable {
 	private String cronData;
 	private String metricName;
 	
-	public Job(String command, String cronData)
+	public Job(String command, String cronData, String metricName)
 	{
 		this.command = command;
 		this.cronData = cronData;
+		this.metricName = metricName;
 	}
 
 	@Override

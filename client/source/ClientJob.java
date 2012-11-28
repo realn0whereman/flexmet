@@ -7,6 +7,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import com.flexmet.global.Log;
+import com.flexmet.global.MetricEvent;
 
 public class ClientJob implements Job
 {
@@ -21,6 +22,7 @@ public class ClientJob implements Job
 
 		JobDataMap args = context.getJobDetail().getJobDataMap();
 		String command = (String)args.get("command");
+		String metricName = (String)args.get("metricName");
 
 		//Get the runtime for the command
 		Runtime runtime = null;
@@ -107,9 +109,10 @@ public class ClientJob implements Job
 		//Log.writeSpecial(output);
 
 		//Build the container Object
-		MetricEvent event = new MetricEvent(output, Main.hostname, );		
+		MetricEvent event = new MetricEvent(output, Main.hostName, metricName, timeStamp);		
 
 		//Send to Flume
+		NetworkDaemon.sendFlumeEvent(event);
 	}
 
 }
