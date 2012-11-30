@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import com.flexmet.hbase.HbaseDAO;
 import com.flexmet.jobstate.JobLoader;
 import com.flexmet.network.NetworkControlDaemon;
 /**
@@ -29,7 +30,7 @@ public class Bootstrap {
 		}
 	}
 	
-	private final String runAgent = "flume-ng agent --conf /etc/flume-ng/conf/ -f ./flume.conf -Dflume.root.logger=DEBUG,console -n "+hostname;
+	private final String runAgent = "flume-ng agent --conf /etc/flume-ng/conf/ -C /nethome/pvassenkov3/server.jar -f ./flume.conf -Dflume.root.logger=DEBUG,console -n "+hostname;
 	
 	public Bootstrap(){
 		
@@ -45,6 +46,9 @@ public class Bootstrap {
 		loader.loadJobsFromDisk();
 		
 		networkServer.start();
+		HbaseDAO hbaseDAO = new HbaseDAO();
+		hbaseDAO.initHbase(); 
+		
 		boolean isRunning = isFlumeRunning();
 		if(!isRunning){
 			System.out.println("Flume isn't running, starting flume1");

@@ -1,8 +1,14 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -30,10 +36,10 @@ import com.flexmet.thrift.ThriftService;
  *
  */
 public class NetworkDaemon extends Thread implements Runnable {
-	private final static String avroClientCommand = "flume-ng avro-client --host localhost --port " + ThriftService.clientFlumePort +" --conf /etc/flume-ng/conf/";
-	private static LinkedList<String> buffer = new LinkedList<String>();
+	 
+	private final static String avroClientCommand = "flume-ng avro-client --host "+ NetworkDaemon.getAssociatedCollector("collectors.conf") +" --port " + ThriftService.clientFlumePort +" --conf /etc/flume-ng/conf/";
 	private static BufferedWriter out = null;
-	private static String masterServer = "localhost";
+	private static String masterServer = "factor076";
 	private static final int bufferCap = 50;
 	/**
 	 * The method run when the thread starts. Starts listening for pastpath commands issued from the server
@@ -42,7 +48,7 @@ public class NetworkDaemon extends Thread implements Runnable {
 		
 		//start flume client 
 		if(!isFlumeAvroClientRunning()){
-			startFlumeAvroClient();
+			out = startFlumeAvroClient();
 		}
 		
 			//Initialize the handler, and processor
@@ -65,7 +71,6 @@ public class NetworkDaemon extends Thread implements Runnable {
 	 * @return a list of jobs
 	 */
 	public static ArrayList<Job> getJobs(){
-		ArrayList<Job> jobList = new ArrayList<Job>();
 		TSocket t = new TSocket(masterServer, ThriftService.commPort);
 		try {
 			t.open();
@@ -82,42 +87,46 @@ public class NetworkDaemon extends Thread implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		System.out.println(thriftJobList.getJobList()); //TODO parse this
+		String jsonString = thriftJobList.getJobList();
+		ArrayList<Job> jobList = parseJobList(jsonString);
+		
 		return jobList;
 	}
+	private static ArrayList<Job> parseJobList(String jsonString) {
+		ArrayList<Job> jobList = new ArrayList<Job>();
+		
+		BufferedReader stringReader = new BufferedReader(new StringReader(jsonString));
+		String line = "", currentJob = "";
+		
+		try {
+			while((line = stringReader.readLine()) != null){
+				currentJob += line + "\n";
+				if(line.equals("}")){
+					jobList.add(Job.getFromJSON(currentJob));
+					currentJob = "";
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jobList;
+	}
+
 	/**
 	 * Add a metric event to the flume buffer. If the buffer is over a certain size, flush it to flume.
 	 * @param event 
 	 */
 	public static void sendFlumeEvent(MetricEvent event){
-		System.out.println("Sending:"+event.getData());
-		StringBuilder sb = new StringBuilder();
-		
-		//TODO Jsonify this
-		sb.append(event.getTimestamp() + event.getMetricName() + event.getHostname() + event.getData());
-		buffer.add(sb.toString());
-		if(buffer.size() > bufferCap){
-			processFlumeBuffer(); //TODO buffer also needs to be flushed on a certain timeout
-			buffer.clear();
-		}
-	}
-	
-	/**
-	 * Checks to see if there is a valid handle for the flume avro client. If not, execute the process and get the handle. Then
-	 * proceed to write everything in the buffer to the flume avro client.
-	 */
-	private static void processFlumeBuffer(){
+		System.out.println("Sending:"+event.getMetricName());
 		if(!isFlumeAvroClientRunning()){
 			System.out.println("Starting Flume Avro Client");
 			out = startFlumeAvroClient();
 		}
+		
 		try {
-			for(String s:buffer){
-				out.write(s);
-				out.newLine();
-			}
+			out.write(event.getJSONString().replaceAll("\n", "")+"\n");
 			out.flush();
-			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,15 +139,16 @@ public class NetworkDaemon extends Thread implements Runnable {
 	 * @return a writer for the STDIN handle to the flume avro client process
 	 */
 	private static BufferedWriter startFlumeAvroClient() {
-		BufferedWriter out = null;
+		System.out.println(avroClientCommand);
+		BufferedWriter output = null;
 		try {
 			Process processSearch = Runtime.getRuntime().exec(avroClientCommand);
-			out = new BufferedWriter( new OutputStreamWriter(processSearch.getOutputStream()));
+			output = new BufferedWriter( new OutputStreamWriter(processSearch.getOutputStream()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return out;
+		return output;
 		
 	}
 	
@@ -151,11 +161,11 @@ public class NetworkDaemon extends Thread implements Runnable {
 		try {
 			//ps a | grep ... | grep -v grep  -- this lists all processes, search for the flume avro client, 
 			//and removes "grep" from the possible running processes
-			Process processSearch = Runtime.getRuntime().exec("ps a | grep "+avroClientCommand+" | grep -v grep");
+			Process processSearch = Runtime.getRuntime().exec("jps -l");
 			String filtered;
 			BufferedReader input = new BufferedReader(new InputStreamReader(processSearch.getInputStream()));
 			while ((filtered = input.readLine()) != null){
-		        if(filtered.length() != 0 && filtered.contains(avroClientCommand)){
+		        if(filtered.contains("org.apache.flume.client.avro.AvroCLIClient")){
 					isRunning = true;
 					break;
 				}
@@ -167,6 +177,39 @@ public class NetworkDaemon extends Thread implements Runnable {
 		} 
 		return isRunning;
 	}
+	
+	public static String getAssociatedCollector(String filename){
+		String hostname = "";
+		try {
+			hostname = InetAddress.getLocalHost().getHostName();
+			if(hostname.contains(".")){
+				hostname = hostname.substring(0,hostname.indexOf("."));
+			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		BufferedReader reader = null;
+		String line = "";
+		try {
+			reader = new BufferedReader(new FileReader(new File(filename)));
+			while((line = reader.readLine()) != null){
+				if(line.contains(hostname)){
+					break;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return line.substring(line.indexOf(":")+1,line.length());
+	}
+	
 	
 	/**
 	 * Handler that reacts to fastpath events
@@ -254,5 +297,7 @@ public class NetworkDaemon extends Thread implements Runnable {
 			return response;
 		}
 	}
+	
+	
 	
 }

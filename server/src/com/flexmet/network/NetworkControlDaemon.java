@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.thrift.TException;
-import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
@@ -24,13 +22,9 @@ import com.flexmet.network.NetworkHandlers.HudPIQLServiceHandler;
 import com.flexmet.network.NetworkHandlers.ThriftServiceHandler;
 import com.flexmet.thrift.FastPathEvent;
 import com.flexmet.thrift.FastPathService;
-import com.flexmet.thrift.HudFastPathEvent;
 import com.flexmet.thrift.HudFastPathService;
-import com.flexmet.thrift.HudPIQLQuery;
-import com.flexmet.thrift.HudPIQLResponse;
 import com.flexmet.thrift.HudPIQLService;
 import com.flexmet.thrift.ThriftEvent;
-import com.flexmet.thrift.ThriftJobList;
 import com.flexmet.thrift.ThriftService;
 
 /**

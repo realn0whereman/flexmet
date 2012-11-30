@@ -1,8 +1,5 @@
 package com.flexmet.global;
 
-import com.flexmet.global.Log;
-
-import java.util.Scanner;
 /**
  * Container class to hold metric data to send to hbase
  * @author phillip
@@ -75,7 +72,7 @@ public class MetricEvent
 		json.put("timestamp", this.timestamp + "");
 
 		//Get the string representation
-		return json.getJSONString();
+		return json.getJSONString()+"\n";
 	}
 	
 	public static MetricEvent getFromJSON(String json)

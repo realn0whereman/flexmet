@@ -44,7 +44,7 @@ foreach(@servers){
 	print $command."\n";
 	system($command);
 }
-
+sleep(10);
 print "Starting collectors\n";
 foreach(@collectors){
 	$command = "ssh $_ \"flume-ng agent --conf /etc/flume-ng/conf/ -f ~/flume.conf -Dflume.root.logger=DEBUG,console -n $_ &> collector.out\" &";

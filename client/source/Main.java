@@ -47,7 +47,7 @@ public class Main
 		}
 		
 		ArrayList<Job> startingJobs = NetworkDaemon.getJobs();
-		
+		System.out.println(startingJobs.toString());
 		resetJobList(startingJobs);
 
 //			event.setData(Integer.toString(i));

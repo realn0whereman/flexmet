@@ -1,12 +1,10 @@
 package com.flexmet.jobstate;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 import com.flexmet.containers.JobListWrapper;
 import com.flexmet.global.Job;
@@ -20,7 +18,6 @@ public class JobLoader {
 	static JobListWrapper jobs;
 	Class<?> serializeableClass;
 	String filename = "./jobs.conf"; //name of file to serialize to/from
-	
 	/**
 	 * Initialize the class variables
 	 */
@@ -34,22 +31,42 @@ public class JobLoader {
 	 * @return returns a the class variable for convenience (mostly testing)
 	 */
 	public JobListWrapper loadJobsFromDisk(){
-		String line = "";
 		try {
 			File jobFile = prepareOutputHandle();
-			Unmarshaller dataUnmarshaller = prepareUnmarshaller();
-			//TODO validation
-			jobs = (JobListWrapper)dataUnmarshaller.unmarshal(jobFile);
+			jobs = parseJobsFromFile(jobFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jobs;
 	}
 	
+	private JobListWrapper parseJobsFromFile(File jobFile) {
+		JobListWrapper jlw = new JobListWrapper();
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(jobFile));
+			String line = "";
+			String jsonString = "";
+			while((line = reader.readLine()) != null){
+				jsonString += line + "\n";
+				if(line.substring(0,1).equals("#")){ // comments
+					continue;
+				}
+				if(line.equals("}")){ //end of metric event json block
+					
+					jlw.addJob(Job.getFromJSON(jsonString));
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jlw;
+	}
+
 	/**
 	 * Add a job to the list of scheduled jobs
 	 * @param j
@@ -63,24 +80,6 @@ public class JobLoader {
 	}
 	
 	/**
-	 * Write the jobs currently in memory to the disk
-	 */
-	public void writeJobsToDisk(){
-		try {
-			Marshaller dataMarshaller = prepareMarshaller();
-			File jobFile = prepareOutputHandle();
-			dataMarshaller.marshal(jobs, jobFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	/**
 	 * Prepare the filehandle for file storage. Create the file if it doesn't exist.
 	 * @return file handle to data file
 	 * @throws IOException
@@ -91,26 +90,4 @@ public class JobLoader {
 		return jobFile;
 	}
 	
-	/**
-	 * Prepare the data marshaller and set marshalling formats
-	 * @return
-	 * @throws JAXBException
-	 */
-	private Marshaller prepareMarshaller() throws JAXBException{
-		JAXBContext contextObj = JAXBContext.newInstance(serializeableClass);
-		Marshaller dataMarshaller = contextObj.createMarshaller();
-		dataMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		return dataMarshaller;
-	}
-	
-	/**
-	 * Prepare the data unmarshaller
-	 * @return
-	 * @throws JAXBException
-	 */
-	private Unmarshaller prepareUnmarshaller() throws JAXBException{
-		JAXBContext contextObj = JAXBContext.newInstance(serializeableClass);
-		Unmarshaller dataUnmarshaller = contextObj.createUnmarshaller();
-		return dataUnmarshaller;
-	}
 }

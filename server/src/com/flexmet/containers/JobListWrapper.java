@@ -29,5 +29,13 @@ public class JobListWrapper {
 		jobList.add(j);
 	}
 	
+	public String toString(){
+		String toString = "";
+		for(Job j:jobList){
+			toString += j.getJSONString() + "\n";
+		}
+		return toString;
+	}
+	
 	
 }

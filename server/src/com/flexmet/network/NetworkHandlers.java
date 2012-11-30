@@ -1,17 +1,9 @@
 package com.flexmet.network;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.thrift.TException;
 
-import naga.NIOSocket;
-
-import com.flexmet.containers.JobListWrapper;
-import com.flexmet.global.Job;
-import com.flexmet.global.NetworkEventType;
 import com.flexmet.jobstate.JobLoader;
 import com.flexmet.thrift.HudFastPathEvent;
 import com.flexmet.thrift.HudFastPathService;
@@ -34,7 +26,8 @@ public class NetworkHandlers {
 		@Override
 		public ThriftJobList getJobs() throws TException {
 			ThriftJobList jobList = new ThriftJobList();
-			jobList.setJobList(JobLoader.getJobs().getJobList().toString()); //TODO JSONifiy this
+			 String jobListString = JobLoader.getJobs().toString(); 
+			jobList.setJobList(jobListString); //TODO JSONifiy this
 			return jobList;
 		}
 	

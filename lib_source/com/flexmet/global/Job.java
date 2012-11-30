@@ -14,6 +14,10 @@ public class Job implements Serializable {
 	private String cronData;
 	private String metricName;
 	
+	public Job(){
+		
+	}
+	
 	public Job(String command, String cronData, String metricName)
 	{
 		this.command = command;
@@ -48,6 +52,36 @@ public class Job implements Serializable {
 
 	public void setMetricName(String metricName) {
 		this.metricName = metricName;
+	}
+	
+	public String getJSONString()
+	{
+		//Create the holder and set the name
+		JSONObject json = new JSONObject();
+		json.name = "Job";
+
+		//Add all of the data of this object to the holder
+		json.put("command", this.command);
+		json.put("cronData", this.cronData);
+		json.put("metricName", this.metricName);
+
+		//Get the string representation
+		return json.getJSONString()+"\n";
+	}
+	
+	public static Job getFromJSON(String json)
+	{
+		//Use static method to create an object by parsing the given string:
+		JSONObject data = JSONObject.parseJSON(json);
+
+		Job job = new Job();
+		
+		//Pull out the data from the object
+		job.setCommand(data.getString("command"));
+		job.setCronData(data.getString("cronData"));
+		job.setMetricName(data.getString("metricName"));
+		
+		return job;
 	}
 	
 	

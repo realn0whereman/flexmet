@@ -23,7 +23,9 @@ public class ClientJob implements Job
 		JobDataMap args = context.getJobDetail().getJobDataMap();
 		String command = (String)args.get("command");
 		String metricName = (String)args.get("metricName");
-
+		
+		System.out.println("Command executing:"+command);
+		
 		//Get the runtime for the command
 		Runtime runtime = null;
 		Process process = null; 

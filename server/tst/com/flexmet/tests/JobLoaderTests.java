@@ -19,12 +19,12 @@ public class JobLoaderTests {
 	@Test
 	public void writeJobsToDisk(){ 
 		JobLoader j = new JobLoader();
-		Job job1 = new Job();
+		Job job1 = new Job("A","A","A");
 		job1.setCommand("TestCommand");
 		job1.setCronData("CronData");
 		j.addJob(job1);
 		j.addJob(job1);
-		j.writeJobsToDisk();
+		//j.writeJobsToDisk();
 		String dataFromFile = getDataFromFile(j);
 		String expectedData = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
 				"<jobListWrapper>" +
@@ -45,15 +45,15 @@ public class JobLoaderTests {
 	@Test
 	public void readJobsFromDisk(){
 		JobLoader j = new JobLoader();
-		Job job1 = new Job();
-		Job job2 = new Job();
+		Job job1 = new Job("A","A","A");
+		Job job2 = new Job("A","A","A");
 		job1.setCommand("TestCommand1");
 		job1.setCronData("CronData1");
 		job2.setCommand("TestCommand2");
 		job2.setCronData("CronData2");
 		j.addJob(job1);
 		j.addJob(job2);
-		j.writeJobsToDisk();
+		//j.writeJobsToDisk();
 		JobListWrapper list = j.loadJobsFromDisk();
 		ArrayList<Job> l =  list.getJobList();
 		

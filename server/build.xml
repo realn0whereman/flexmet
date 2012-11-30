@@ -8,13 +8,22 @@
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="com.flexmet.bootstrap.EntryPoint"/>
                 <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ naga-3_0.jar libthrift-0.9.0.jar slf4j-api-1.7.2.jar junit.jar org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+                <attribute name="Rsrc-Class-Path" value="./ libthrift-0.9.0.jar slf4j-api-1.7.2.jar commons-lang-2.6.jar commons-configuration-1.9.jar guava-13.0.1.jar hbase.jar hadoop-common.jar flume-ng-hbase-sink-1.2.0.jar flume-ng-sdk-1.2.0.jar flume-ng-configuration-1.2.0.jar flume-ng-core-1.2.0.jar commons-logging-1.1.1.jar junit.jar org.hamcrest.core_1.1.0.v20090501071000.jar"/>
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/bin"/>
-            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/lib" includes="naga-3_0.jar"/>
             <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/lib" includes="libthrift-0.9.0.jar"/>
             <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/lib" includes="slf4j-api-1.7.2.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/lib" includes="commons-lang-2.6.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/lib" includes="commons-configuration-1.9.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/lib" includes="guava-13.0.1.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/lib" includes="hbase.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/lib" includes="hadoop-common.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/lib" includes="flume-ng-hbase-sink-1.2.0.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/lib" includes="flume-ng-sdk-1.2.0.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/lib" includes="flume-ng-configuration-1.2.0.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/server/lib" includes="flume-ng-core-1.2.0.jar"/>
+            <zipfileset dir="/Users/phillip/Dropbox/Code/workspace/flexmet/lib" includes="commons-logging-1.1.1.jar"/>
             <zipfileset dir="/Applications/eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705" includes="junit.jar"/>
             <zipfileset dir="/Applications/eclipse/plugins" includes="org.hamcrest.core_1.1.0.v20090501071000.jar"/>
         </jar>
